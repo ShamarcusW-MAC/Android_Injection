@@ -2,6 +2,7 @@ package com.example.injection_test.data;
 
 import android.telecom.Call;
 
+import com.example.injection_test.di.Injector;
 import com.example.injection_test.model.RandomUser;
 import com.example.injection_test.network.NetworkManager;
 
@@ -10,17 +11,17 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
 
 public class RandomService {
 
     private RandomAPI randomAPI;
 
-    public RandomService(){
+    public RandomService(RandomAPI randomAPI){
 
-        NetworkManager networkManager = new NetworkManager();
-        Retrofit retrofit = networkManager.provideRetrofitClient(RandomAPI.BASE_URL);
-        randomAPI = retrofit.create(RandomAPI.class);
+        this.randomAPI = randomAPI;
+//        NetworkManager networkManager = new NetworkManager();
+//        Retrofit retrofit = networkManager.provideRetrofitClient(RandomAPI.BASE_URL);
+//        randomAPI = retrofit.create(RandomAPI.class);
 
     }
 
@@ -49,7 +50,7 @@ public class RandomService {
                 });
     }
 
-    interface Callback{
+  public interface Callback{
         void onRandomUser(RandomUser user);
         void onError(String error);
     }
