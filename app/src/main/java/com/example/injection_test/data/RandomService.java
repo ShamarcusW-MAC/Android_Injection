@@ -4,7 +4,6 @@ import android.telecom.Call;
 
 import com.example.injection_test.di.Injector;
 import com.example.injection_test.model.RandomUser;
-import com.example.injection_test.network.NetworkManager;
 
 import io.reactivex.ObservableEmitter;
 import io.reactivex.SingleObserver;
@@ -19,7 +18,6 @@ public class RandomService {
     public RandomService(RandomAPI randomAPI){
 
         this.randomAPI = randomAPI;
-//        NetworkManager networkManager = new NetworkManager();
 //        Retrofit retrofit = networkManager.provideRetrofitClient(RandomAPI.BASE_URL);
 //        randomAPI = retrofit.create(RandomAPI.class);
 

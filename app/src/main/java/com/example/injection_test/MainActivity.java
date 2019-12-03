@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.injection_test.data.RandomService;
+import com.example.injection_test.di.ActivityComponent;
 import com.example.injection_test.di.Injector;
 import com.example.injection_test.model.RandomUser;
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements RandomService.Callback {
 
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements RandomService.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        service = Injector.provideRandomService();
+//        service = Injector.provideRandomService();
         service.getRandomUser(this);
     }
 

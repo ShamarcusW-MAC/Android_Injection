@@ -1,17 +1,21 @@
 package com.example.injection_test.network;
 
 import com.example.injection_test.BuildConfig;
+import com.example.injection_test.data.RandomAPI;
 
+import javax.inject.Singleton;
+
+import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NetworkManager {
+public class NetworkModule {
     private Retrofit retrofit;
 
-    public NetworkManager(){
+    public NetworkModule(){
         //constructor
     }
 
@@ -23,22 +27,30 @@ public class NetworkManager {
 //                .build();
 //    }
 //
-    public Retrofit provideRetrofitClient(String url){
+    @Provides
+    @Singleton
+    Retrofit provideRetrofitClient(OkHttpClient client,
+                                          RxJava2CallAdapterFactory callFactory,
+                                          GsonConverterFactory converterFactory){
         return new Retrofit.Builder()
-                .baseUrl(url)
-                .addCallAdapterFactory(provideExJavaCallAdapter())
-                .addConverterFactory(provideConverterFactory())
-                .client(provideHttpClient())
+                .baseUrl(RandomAPI.BASE_URL)
+                .addCallAdapterFactory(callFactory)
+                .addConverterFactory(converterFactory)
+                .client(client)
                 .build();
     }
 
-    private OkHttpClient provideHttpClient(){
+    @Provides
+    @Singleton
+    OkHttpClient provideHttpClient(){
         return new OkHttpClient.Builder()
                 .addInterceptor(provideHttpInterceptor())
                 .build();
     }
 
-    private HttpLoggingInterceptor provideHttpInterceptor(){
+    @Provides
+    @Singleton
+    HttpLoggingInterceptor provideHttpInterceptor(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         if(BuildConfig.DEBUG) {
             interceptor.level(HttpLoggingInterceptor.Level.BODY);
@@ -50,11 +62,15 @@ public class NetworkManager {
         return interceptor;
     }
 
-    private GsonConverterFactory provideConverterFactory(){
+    @Provides
+    @Singleton
+    GsonConverterFactory provideConverterFactory(){
         return GsonConverterFactory.create();
     }
 
-    private RxJava2CallAdapterFactory provideExJavaCallAdapter(){
+    @Provides
+    @Singleton
+    RxJava2CallAdapterFactory provideExJavaCallAdapter(){
         return RxJava2CallAdapterFactory.create();
     }
 }
